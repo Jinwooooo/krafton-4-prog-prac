@@ -29,11 +29,14 @@ def n_queens(n):
     return count
 
 n = int(sys.stdin.readline())
-if n < 13:
-	print(n_queens(n))
-elif n == 13:
-	print('73712')
-elif n == 14:
-	print('365596')
-elif n == 15:
-	print('2279184')
+print(n_queens(n))
+
+# too program is too slow, to pass BJ judge, hardcode was included
+# if n < 13:
+# 	print(n_queens(n))
+# elif n == 13:
+# 	print('73712')
+# elif n == 14:
+# 	print('365596')
+# elif n == 15:
+# 	print('2279184')

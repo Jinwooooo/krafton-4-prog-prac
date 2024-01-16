@@ -1,40 +1,45 @@
-def solve_n_queens(n):
-    # 가능한 모든 솔루션의 수를 저장할 변수
-    count = 0
+def partition_matrix(matrix):
+    n = len(matrix)
+    
+    if n % 2 != 0:
+        raise ValueError("Matrix dimensions should be even for partitioning")
 
-    # 유효한 퀸 배치를 확인하는 함수
-    def is_valid(board, row, col):
-        # 같은 열에 퀸이 있는지 확인
-        for i in range(row):
-            if board[i] == col:
-                return False
-            # 대각선에 퀸이 있는지 확인
-            if abs(board[i] - col) == abs(i - row):
-                return False
-        return True
+    mid = n // 2
 
-    # 백트래킹 함수
-    def backtrack(board, row):
-        nonlocal count
-        if row == n:
-            count += 1
-            return
-        for col in range(n):
-            if is_valid(board, row, col):
-                board[row] = col
-                backtrack(board, row + 1)
+    # Extracting four submatrices
+    top_left = [row[:mid] for row in matrix[:mid]]
+    top_right = [row[mid:] for row in matrix[:mid]]
+    bottom_left = [row[:mid] for row in matrix[mid:]]
+    bottom_right = [row[mid:] for row in matrix[mid:]]
 
-    # 초기 체스판 생성
-    board = [-1] * n
-    backtrack(board, 0)
+    return top_left, top_right, bottom_left, bottom_right
 
-    return count
+# Example usage
+n = 4
+original_matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+    [13, 14, 15, 16]
+]
 
-n = 5  # N-퀸 문제에서의 N 값 (체스판 크기)
-solution_count = solve_n_queens(n)
-print(solution_count)
-	
-# This code is contributed by guptapratik
+result = partition_matrix(original_matrix)
+
+print("Top Left Matrix:")
+for row in result[0]:
+    print(row)
+
+print("\nTop Right Matrix:")
+for row in result[1]:
+    print(row)
+
+print("\nBottom Left Matrix:")
+for row in result[2]:
+    print(row)
+
+print("\nBottom Right Matrix:")
+for row in result[3]:
+    print(row)
 
 
 # import sys
