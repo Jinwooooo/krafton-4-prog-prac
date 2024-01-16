@@ -1,24 +1,28 @@
 import sys
 
-def prettify(mat):
-	for row in mat:
-		print(row)
-	print('-----------------------')
-
 def is_same(mat, n):
 	k = n*n
-	mat_sum = sum(map(sum, mat))
+	if mat[0][0] != -1:	
+		mat_sum = sum(map(sum, mat))
 
-	if mat_sum == k:
-		return 1
-	elif mat_sum == 0:
-		return 0
+		if mat_sum == k:
+			return 1
+		elif mat_sum == 0:
+			return 0
+		else:
+			return -1
 	else:
-		return -1
+		return -2
+
+def mk_visit(mat, n):
+	for x in range(n):
+		for y in range(n):
+			mat[x][y] = -2
+
+	return mat
 
 def partition(mat, n):
 	pivot = n // 2
-	print(pivot)
 
 	ul = [row[:pivot] for row in mat[:pivot]]
 	ur = [row[pivot:] for row in mat[:pivot]]
@@ -27,26 +31,46 @@ def partition(mat, n):
 
 	return ul, ur, ll, lr
 
-mat8_size = 8
-mat8 = [[1, 1, 0, 0, 0, 0, 1, 1],
-		[1, 1, 0, 0, 0, 0, 1, 1],
-		[0, 0, 0, 0, 1, 1, 0, 0],
-		[0, 0, 0, 0, 1, 1, 0, 0],
-		[1, 0, 0, 0, 1, 1, 1, 1],
-		[0, 1, 0, 0, 1, 1, 1, 1],
-		[0, 0, 1, 1, 1, 1, 1, 1],
-		[0, 0, 1, 1, 1, 1, 1, 1]]
-mat4_size = 4
-mat4 = [[1, 1, 0, 1],
-		[1, 1, 1, 0],
-		[1, 1, 0, 0],
-		[0, 1, 0, 0]]
+def solve_origami(mat, n):
+	ctr_0 = 0
+	ctr_1 = 0
+	if n == 1:
+		return ctr_0, ctr_1
+	else:
+		mat_partition = partition(mat, n)
+		for part in mat_partition:
+			is_same_val = is_same(part, n // 2)
+
+			if is_same_val == 1:
+				ctr_1 += 1
+				part = mk_visit(part, n // 2)
+			elif is_same_val == 0:
+				ctr_0 += 1
+				part = mk_visit(part, n // 2)
+
+			temp_ctr0, temp_ctr1 = solve_origami(part, (n // 2))
+			ctr_0 += temp_ctr0
+			ctr_1 += temp_ctr1
+
+	return ctr_0, ctr_1
+
+mat = []
+n = int(sys.stdin.readline())
+for _ in range(n):
+	mat.append(list(map(int, sys.stdin.readline().strip().split(' '))))
+
+no_0set = 0
+no_1set = 0
+base_case = is_same(mat, n)
+if base_case == 0:
+	no_0set = 1
+elif base_case == 1:
+	no_1set = 1
+else:
+	no_0set, no_1set = solve_origami(mat, n)
+
+print(no_0set)
+print(no_1set)
 
 
-
-ul, ur, ll, lr = partition(mat8, mat8_size)
-prettify(ul)
-prettify(ur)
-prettify(ll)
-prettify(lr)
 
