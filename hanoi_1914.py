@@ -16,4 +16,3 @@ def tower_of_hanoi_move_list(k, source, temp, target):
 print(tower_of_hanoi_total_moves(stacks))
 if stacks < 21:
 	tower_of_hanoi_move_list(stacks, 1, 2, 3)
-

@@ -1,118 +1,101 @@
 import sys
-from collections import deque
 
-stack = deque()
-post_addition_arr = []
-final_addition_arr = []
+def round_brac_compute(stack, prev_val, valid_cond):
+	while stack:
+		curr_val = stack.pop()
+		if curr_val == '(':
+			if prev_val == 0:
+				stack.append(2)
+			else:
+				stack.append(prev_val * 2)
+			break
+		elif type(curr_val) == int:
+			if prev_val == 0:
+				prev_val = curr_val
+			else:
+				prev_val += curr_val
+		else:
+			valid_cond = False
 
-# test1 = list('(()[[]])([])') # 28
-# test2 = list('[][]((])') # 0
-# test3 = list('(()[[]])') # 22
+	return stack, prev_val, valid_cond
 
-arr = deque(list(sys.stdin.readline().strip()))
+def sqr_brac_compute(stack, prev_val, valid_cond):
+	while stack:
+		curr_val = stack.pop()
+		if curr_val == '[':
+			if prev_val == 0:
+				stack.append(3)
+			else:
+				stack.append(prev_val * 3)
+			break
+		elif type(curr_val) == int:
+			if prev_val == 0:
+				prev_val = curr_val
+			else:
+				prev_val += curr_val
+		else:
+			valid_cond = False
 
+	return stack, prev_val, valid_cond
+
+stack = []
+arr = list(sys.stdin.readline().strip())
+valid_cond = True
+
+# if ~ elif = reduces the computing work, all 3 special cases all are included in the invalid set of mismatch bracket
+# invalid special case : length = 1
 if len(arr) == 1:
-	output = 0
+	valid_cond = False
+# invalid special case : first bracket is closer
 elif arr[0] == ')' or arr[0] == ']':
+	valid_cond = False
+# invalid special case : bracket is always a pair, so odd length will surely fail
+elif len(arr) % 2 != 0:
+	valid_cond = False
+else:
+	for bracket in arr:
+		# invalid special case : when stack is empty, inserting closing bracket case
+		if not stack:
+			if bracket == ')' or bracket == ']':
+				valid_cond = False
+				break
+			else:
+				# closing bracket (i.e. need to pop from stack)
+				if bracket == ')':
+					prev_val = 0
+					stack, prev_val, valid_cond = round_brac_compute(stack, prev_val, valid_cond)
+					if valid_cond == False: break
+				elif bracket == ']':
+					prev_val = 0
+					stack, prev_val, valid_cond = sqr_brac_compute(stack, prev_val, valid_cond)
+					if valid_cond == False: break
+				# opening brackets (i.e. need to push/append to stack)
+				else:
+					stack.append(bracket)
+		else:
+			# closing bracket (i.e. need to pop from stack)
+			if bracket == ')':
+				prev_val = 0
+				stack, prev_val, valid_cond = round_brac_compute(stack, prev_val, valid_cond)
+				if valid_cond == False: break
+			elif bracket == ']':
+				prev_val = 0
+				stack, prev_val, valid_cond = sqr_brac_compute(stack, prev_val, valid_cond)
+				if valid_cond == False: break
+			# opening brackets (i.e. need to push/append to stack)
+			else:
+				stack.append(bracket)
+
+output = 0
+if valid_cond == False:
 	output = 0
 else:
-	temp_holder = 0
-	stack.append(arr.popleft())
-	prev_op = "push"
-	for bracket in arr:
-		if len(stack) > 1:
-			if bracket == '(':
-				# print('[debug] in ', chr(40))
-				if prev_op == "pop":
-					post_addition_arr.append(temp_holder)
-					prev_op = "push"
-					stack.append(bracket)
-				else:
-					stack.append(bracket)
-			elif bracket == '[':
-				# print('[debug] in ', chr(91))
-				if prev_op == "pop":
-					post_addition_arr.append(temp_holder)
-					prev_op = "push"
-					stack.append(bracket)
-				else:
-					stack.append(bracket)
-			elif bracket == ')':
-				curr_brac = stack.pop()
-				if curr_brac == '(':
-					if prev_op == "pop":
-						temp_holder *= 2
-						# print('[debug] in if', chr(41), 'nest, temp_holder = ', temp_holder)
-					else:
-						temp_holder = 2
-						# print('[debug] in if', chr(41), 'init, temp_holder = ', temp_holder)
-						prev_op = "pop"
-				else:
-					# fail case, parenthese does not match
-					output = 0
-					break
-			elif bracket == ']':
-				curr_brac = stack.pop()
-				if curr_brac == '[':
-					if prev_op == "pop":
-						temp_holder *= 3
-						# print('[debug] in if', chr(93), 'nest, temp_holder = ', temp_holder)
-					else:
-						temp_holder = 3
-						# print('[debug] in if', chr(93), 'init, temp_holder = ', temp_holder)
-						prev_op = "pop"
-				else:
-					# fail case, parenthese does not match
-					output = 0
-					break
+	for val in stack:
+		# invalid case : if the stack has brackets remaining case (i.e. mismatch brackets)
+		if type(val) != int:
+			output = 0
+			break
 		else:
-			if bracket == '(':
-				if prev_op == "pop":
-					post_addition_arr.append(temp_holder)
-					prev_op = "push"
-					stack.append(bracket)
-				else:
-					stack.append(bracket)
-			elif bracket == '[':
-				if prev_op == "pop":
-					post_addition_arr.append(temp_holder)
-					prev_op = "push"
-					stack.append(bracket)
-				else:
-					stack.append(bracket)
-			elif bracket == ')':
-				curr_brac = stack.pop()
-				if curr_brac == '(':
-					if prev_op == "pop":
-						post_addition_arr.append(temp_holder)
-						final_addition_arr.append(sum(post_addition_arr) * 2)
-						post_addition_arr = []
-						temp_holder = 0
-						# print('[debug] in else', chr(41), 'nest, temp_holder = ', temp_holder)
-					else:
-						temp_holder = 2
-						# print('[debug] in else', chr(41), 'init, temp_holder = ', temp_holder)
-						prev_op = "pop"
-				else:
-					# fail case, parenthese does not match
-					output = 0
-					break
-			elif bracket == ']':
-				curr_brac = stack.pop()
-				if curr_brac == '[':
-					if prev_op == "pop":
-						post_addition_arr.append(temp_holder)
-						final_addition_arr.append(sum(post_addition_arr) * 3)
-						post_addition_arr = []
-						temp_holder = 0
-						# print('[debug] in else', chr(93), 'nest, temp_holder = ', temp_holder)
-					else:
-						temp_holder = 3
-						# print('[debug] in else', chr(93), 'init, temp_holder = ', temp_holder)
-						prev_op = "pop"
-				else:
-					# fail case, parenthese does not match
-					output = 0
-					break
+			output += val
 
-print(sum(final_addition_arr))
+print(output)
