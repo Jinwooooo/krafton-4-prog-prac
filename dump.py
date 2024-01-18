@@ -1,41 +1,78 @@
-bracket = input()
-length = len(bracket)
-stack = []
-tmp = 1
-res = 0
+def subset_sum_recursive(nums, target_sum):
 
-for i in range(length):
-    b = bracket[i]   
-    if b == '(':
-        tmp *= 2
-        print(stack)
-        stack.append(b)
-    elif b == '[':
-        tmp *= 3
-        print(stack)
-        stack.append(b)
-    elif b == ')':
-        if not stack or stack[-1] == '[':
-            res = 0
-            break
-        if bracket[i-1] == '(':
-            res += tmp
-        tmp //= 2
-        print(stack)
-        stack.pop()  
-    else:
-        if not stack or stack[-1] == '(':
-            res = 0
-            break
-        if bracket[i-1] == '[':
-            res += tmp
-        tmp //= 3
-        print(stack)
-        stack.pop() 
+    def backtrack(start, current_subset, current_sum):
+        nonlocal val
+        if current_sum == target_sum:
+            if len(current_subset) != 1:
+                val += 1
+                result.append(current_subset[:])  # Add a copy of the subset to the result
 
-if stack:
-    res = 0
-print(res)
+        for i in range(start, len(nums)):
+            current_sum += nums[i]
+            current_subset.append(nums[i])
+
+            # Recur with the next element and the updated subset and sum
+            backtrack(i + 1, current_subset, current_sum)
+
+            # Backtrack by removing the last element
+            current_subset.pop()
+            current_sum -= nums[i]
+
+    result = []
+    val = 0
+    nums.sort()  # Sorting the array can help with pruning and duplicate avoidance
+    backtrack(0, [], 0)
+
+    return result, val
+
+# Example usage:
+numbers = [-7, -3, -2, 5, 8]
+target = 0
+result, val = subset_sum_recursive(numbers, target)
+
+print(val)
+for subset in result:
+    print(f"Subset: {subset}, Sum: {sum(subset)}")
+
+
+# bracket = input()
+# length = len(bracket)
+# stack = []
+# tmp = 1
+# res = 0
+
+# for i in range(length):
+#     b = bracket[i]   
+#     if b == '(':
+#         tmp *= 2
+#         print(stack)
+#         stack.append(b)
+#     elif b == '[':
+#         tmp *= 3
+#         print(stack)
+#         stack.append(b)
+#     elif b == ')':
+#         if not stack or stack[-1] == '[':
+#             res = 0
+#             break
+#         if bracket[i-1] == '(':
+#             res += tmp
+#         tmp //= 2
+#         print(stack)
+#         stack.pop()  
+#     else:
+#         if not stack or stack[-1] == '(':
+#             res = 0
+#             break
+#         if bracket[i-1] == '[':
+#             res += tmp
+#         tmp //= 3
+#         print(stack)
+#         stack.pop() 
+
+# if stack:
+#     res = 0
+# print(res)
 
 
 # string = input()
