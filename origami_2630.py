@@ -17,7 +17,7 @@ def is_same(mat, n):
 def mk_visit(mat, n):
 	for x in range(n):
 		for y in range(n):
-			mat[x][y] = -2
+			mat[x][y] = -1
 
 	return mat
 
