@@ -5,22 +5,20 @@ def dfs_stack(graph, start):
 	# intializing
 	for m in graph.values():
 		m.sort(reverse=True)
-	visited = []
+	visited = [start]
 	stack = []
 
-	# base case (root node)
-	visited.append(start)
+	# base case (root node neighbors)
 	for nodes in graph[start]:
 		stack.append(nodes)
 
 	# iteration case (until stack is empty)
 	while stack:
 		curr_pos = stack.pop()
-		if curr_pos in visited:
-			continue
-		visited.append(curr_pos)
-		for nodes in graph[curr_pos]:
-			stack.append(nodes)
+		if curr_pos not in visited:
+			visited.append(curr_pos)
+			for nodes in graph[curr_pos]:
+				stack.append(nodes)
 	return visited
 
 def dfs_recur(graph, node, visited):
@@ -34,11 +32,10 @@ def bfs(graph, start):
 	# initializing
 	for m in graph.values():
 		m.sort()
-	visited = []
+	visited = [start]
 	queue = deque([])
 
-	# base case (root node)
-	visited.append(start)
+	# base case (root node neighbors)
 	for nodes in graph[start]:
 		queue.append(nodes)
 

@@ -1,46 +1,83 @@
-import sys
-from collections import deque
+def dfs_recur_bipart(graph, node, visited, color_arr, color_val):
+    if node not in visited:
+        visited.append(node)
+        for neighbor in graph[node]:
+            if color_arr[neighbor] == -1:
+                # Flip the color for the next level of recursion
+                next_color_val = 1 - color_val
+                color_arr[neighbor] = next_color_val
+                print('***** in color_arr[neighbor] == -1 *****')
+                print('curr node = ', neighbor)
+                print('curr color_arr = ', next_color_val)
+                print('curr color_arr = ', color_arr)
+                print('-------------------------')
+                result, visited = dfs_recur_bipart(graph, neighbor, visited, color_arr, next_color_val)
+                if not result:
+                    return False, visited
+            elif color_arr[neighbor] == color_val:
+                print('***** in color_arr[neighbor] == color_val *****')
+                print('curr node = ', neighbor)
+                print('curr color_arr = ', color_val)
+                print('curr color_arr = ', color_arr)
+                print('-------------------------')
+                return False, visited
+    return True, visited
 
-def bfs(graph, start):
-    # initializing
-    for m in graph.values():
-        m.sort()
-    visited = set()
-    queue = deque([])
+# Example usage:
+graph = {1: [3], 2: [3], 3: [1, 2]}
+start_node = 1
+visited = []
+color_arr = {node: -1 for node in graph}
+color_arr[start_node] = 0
 
-    # base case (root node)
-    queue.append(start)
-    # visited.add(start)
-    # for nodes in graph[start]:
-    #     queue.append(nodes)
+is_bipartite, _ = dfs_recur_bipart(graph, start_node, visited, color_arr, 0)
+print('Is Bipartite:', is_bipartite)
 
-    print('visited = ', visited)
-    print('queue = ', queue)
-    print('-------------')
 
-    # iteration case (until queue is empty)
-    while queue:
-        curr_pos = queue.popleft()
-        visited.add(curr_pos)
-        for nodes in graph[curr_pos]:
-            if nodes not in visited:
-                queue.append(nodes)
-        print('visited = ', visited)
-        print('queue = ', queue)
-        print('-------------')
 
-    return visited
+# import sys
+# from collections import deque
 
-no_nodes, no_edges, start = map(int, sys.stdin.readline().strip().split(' '))
-graph = {}
-for k in range(1, no_nodes+1):
-    graph[k] = []
-for _ in range(no_edges):
-    ins_node, ins_edge = map(int, sys.stdin.readline().strip().split(' '))
-    graph[ins_node].append(ins_edge)
-    graph[ins_edge].append(ins_node)
+# def bfs(graph, start):
+#     # initializing
+#     for m in graph.values():
+#         m.sort()
+#     visited = set()
+#     queue = deque([])
 
-print(*bfs(graph, start))
+#     # base case (root node)
+#     queue.append(start)
+#     # visited.add(start)
+#     # for nodes in graph[start]:
+#     #     queue.append(nodes)
+
+#     print('visited = ', visited)
+#     print('queue = ', queue)
+#     print('-------------')
+
+#     # iteration case (until queue is empty)
+#     while queue:
+#         curr_pos = queue.popleft()
+#         visited.add(curr_pos)
+#         for nodes in graph[curr_pos]:
+#             if nodes not in visited:
+#                 queue.append(nodes)
+#         print('visited = ', visited)
+#         print('queue = ', queue)
+#         print('-------------')
+
+#     return visited
+
+# no_nodes, no_edges, start = map(int, sys.stdin.readline().strip().split(' '))
+# graph = {}
+# for k in range(1, no_nodes+1):
+#     graph[k] = []
+# for _ in range(no_edges):
+#     ins_node, ins_edge = map(int, sys.stdin.readline().strip().split(' '))
+#     graph[ins_node].append(ins_edge)
+#     graph[ins_edge].append(ins_node)
+
+# print(*bfs(graph, start))
 
 
 # import sys
