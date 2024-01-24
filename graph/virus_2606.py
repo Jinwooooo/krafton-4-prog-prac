@@ -10,7 +10,7 @@ def dfs_recur(graph, node, visited):
 
 no_nodes = int(sys.stdin.readline())
 no_edges = int(sys.stdin.readline())
-graph = [[] for i in range(0, no_nodes + 1)]
+graph = [[] for _ in range(0, no_nodes + 1)]
 
 for _ in range(no_edges):
 	node, edge = map(int, sys.stdin.readline().strip().split(' '))

@@ -1,37 +1,88 @@
-def dfs_recur_bipart(graph, node, visited, color_arr, color_val):
-    if node not in visited:
-        visited.append(node)
-        for neighbor in graph[node]:
-            if color_arr[neighbor] == -1:
-                # Flip the color for the next level of recursion
-                next_color_val = 1 - color_val
-                color_arr[neighbor] = next_color_val
-                print('***** in color_arr[neighbor] == -1 *****')
-                print('curr node = ', neighbor)
-                print('curr color_arr = ', next_color_val)
-                print('curr color_arr = ', color_arr)
-                print('-------------------------')
-                result, visited = dfs_recur_bipart(graph, neighbor, visited, color_arr, next_color_val)
-                if not result:
-                    return False, visited
-            elif color_arr[neighbor] == color_val:
-                print('***** in color_arr[neighbor] == color_val *****')
-                print('curr node = ', neighbor)
-                print('curr color_arr = ', color_val)
-                print('curr color_arr = ', color_arr)
-                print('-------------------------')
-                return False, visited
-    return True, visited
+import sys
+import heapq
 
-# Example usage:
-graph = {1: [3], 2: [3], 3: [1, 2]}
-start_node = 1
-visited = []
-color_arr = {node: -1 for node in graph}
-color_arr[start_node] = 0
+input = sys.stdin.readline
 
-is_bipartite, _ = dfs_recur_bipart(graph, start_node, visited, color_arr, 0)
-print('Is Bipartite:', is_bipartite)
+def print_g(graph):
+    for row in graph:
+        print(row)
+
+n = int(input())
+maze = []
+for _ in range(n):
+    maze.append(list(map(int, input().rstrip())))
+
+# 2차원 리스트에서 상하좌우 이동을 위한 dirction x, direction y 변수 선언
+dx = [1, -1 ,0, 0]
+dy = [0, 0, 1, -1]
+
+# 방문 여부 체크를 위한 visited 2차원 리스트
+visited = [[False] * n for _ in range(n)]
+
+def bfs(x, y):
+    heap = []
+    heapq.heappush(heap, (0, x, y))
+
+    while heap:
+        count, cx, cy = heapq.heappop(heap)
+        visited[cx][cy] = True
+
+        # 도착지점에 도착했을 경우
+        if cx == (n - 1) and cy == (n - 1):
+            return count
+
+        # 상하좌우로 한칸씩 이동하여 탐색 진행
+        for i in range(4):
+            nx = cx + dx[i]
+            ny = cy + dy[i]
+
+            if (0 <= nx < n) and (0 <= ny < n) and not visited[nx][ny]:
+                # 방문처리
+                visited[nx][ny] = True
+                # 흰 방
+                if maze[nx][ny] == 1:
+                    heapq.heappush(heap, (count, nx, ny))
+                # 검은 방
+                else:
+                    heapq.heappush(heap, (count + 1, nx, ny))
+        print_g(visited)
+
+print(bfs(0, 0))
+
+# def dfs_recur_bipart(graph, node, visited, color_arr, color_val):
+#     if node not in visited:
+#         visited.append(node)
+#         for neighbor in graph[node]:
+#             if color_arr[neighbor] == -1:
+#                 # Flip the color for the next level of recursion
+#                 next_color_val = 1 - color_val
+#                 color_arr[neighbor] = next_color_val
+#                 print('***** in color_arr[neighbor] == -1 *****')
+#                 print('curr node = ', neighbor)
+#                 print('curr color_arr = ', next_color_val)
+#                 print('curr color_arr = ', color_arr)
+#                 print('-------------------------')
+#                 result, visited = dfs_recur_bipart(graph, neighbor, visited, color_arr, next_color_val)
+#                 if not result:
+#                     return False, visited
+#             elif color_arr[neighbor] == color_val:
+#                 print('***** in color_arr[neighbor] == color_val *****')
+#                 print('curr node = ', neighbor)
+#                 print('curr color_arr = ', color_val)
+#                 print('curr color_arr = ', color_arr)
+#                 print('-------------------------')
+#                 return False, visited
+#     return True, visited
+
+# # Example usage:
+# graph = {1: [3], 2: [3], 3: [1, 2]}
+# start_node = 1
+# visited = []
+# color_arr = {node: -1 for node in graph}
+# color_arr[start_node] = 0
+
+# is_bipartite, _ = dfs_recur_bipart(graph, start_node, visited, color_arr, 0)
+# print('Is Bipartite:', is_bipartite)
 
 
 
