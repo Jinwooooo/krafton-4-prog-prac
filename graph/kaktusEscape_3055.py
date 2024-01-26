@@ -54,10 +54,6 @@ def dfs_kaktus(maze, mrows, mcols):
 					maze[nrow][ncol] = '*'
 					queue.append((nrow, ncol))
 
-		# simulation chk
-		# print(queue)
-		# print_g(distance)
-		# print_g(maze)
 	return "KAKTUS"
 
 mrows, mcols = map(int, input().strip().split(' '))
