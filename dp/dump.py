@@ -1,36 +1,54 @@
 import sys
 
-input = sys.stdin.readline
+inp = sys.stdin.readline
+x = int(inp())
+output = {0:0, 1:0, 2:1, 3:1}
 
-def print_m(mat):
-    for row in mat:
-        print(row)
-    print('-----------------------')
+def fnc(x):
+    print(x)
+    if x in output.keys():
+        return output[x]
+    if x % 6 == 0:
+        output[x] = min(fnc(x // 3), fnc(x // 2)) + 1
+    elif x % 3 == 0:
+        output[x] = min(fnc(x // 3), fnc(x-1)) + 1
+    elif x % 2 == 0:
+        output[x] = min(fnc(x // 2), fnc(x-1)) + 1
+    else:
+        output[x] = fnc(x - 1) + 1
+    return output[x]
+test = fnc(x)
+print(test)
+                    
+# N까지 갈 수 없다면 -1, 가능하다면 최솟값 출력
+# if len(dp[N]) == 0:
+#     print(-1)
+# else:
+#     print(min(dp[N].values()))
 
-no_ks, w_ks = map(int, input().strip().split(' '))
-ks = [(0,0)]
-for _ in range(no_ks):
-    w, n = map(int, input().strip().split(' '))
-    ks.append((w, n))
+# import sys
+# from collections import deque
 
-dp = [[0 for _ in range(no_ks + 1)] for _ in range(w_ks + 1)]
+# N, M = map(int, sys.stdin.readline().split())
+# check = [[] for _ in range(N + 1)]
+# small_rock = set()
+# for _ in range(M):
+#     small = int(sys.stdin.readline())
+#     small_rock.add(small)
 
-for w in range(1, w_ks + 1):
-    for n in range(1, no_ks + 1):
-        print('current weight = ', ks[n][0], ', current gain = ', ks[n][1])
-        print('iteration x(w), y(n) = ', w, ',', n)
-        # ks[n][0] = current weight of the item
-        if w < ks[n][0]:
-            # retrieve the gain from left (i.e. (n = k) == (n = k+1))
-            print('weight cannot be inserted')
-            dp[w][n] = dp[w][n - 1]
-        else:
-            print('weight can be inserted, update gain if necessary')
-            print('previous gain: dp[w][n - 1] = ', dp[w][n - 1])
-            print('updated gain: dp[dp[w - ks[n][0]][n - 1] + ks[n][1] = ', dp[w - ks[n][0]][n - 1] + ks[n][1])
-            # update the gain if the item can be inserted
-            # dp[w][n - 1] = previous max gain (i.e. n = k)
-            # dp[w - ks[n][0]][n - 1] + ks[n][1] = if current weight can be inserted + insert gain
-            #   dp[w - ks[n][0]] = remaining weight
-            dp[w][n] = max(dp[w][n - 1], dp[w - ks[n][0]][n - 1] + ks[n][1])
-        print_m(dp)
+# def solution(N, check, small_rock):
+#     queue = deque([(1, 0, 0)])
+#     while queue:
+#         location, jump, n = queue.popleft()
+#         for x in [jump + 1, jump, jump - 1]:
+#             if x > 0:
+#                 next_location = location + x
+#                 if next_location == N:
+#                     return n + 1
+#                 if (next_location < N) and (next_location not in small_rock) and (x not in check[next_location]):
+#                     check[next_location].append(x)
+#                     queue.append((next_location, x, n + 1))
+#         print(queue)
+#     return -1 
+
+# print(solution(N, check, small_rock))

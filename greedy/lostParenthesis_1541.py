@@ -24,7 +24,6 @@ if '-' not in eq_split:
 		if type(val) == int:
 			output_arr.append()
 else:
-
 	while '-' in eq_split:
 		# splitting list based on '-' index location
 		idx_sub = eq_split.index('-')

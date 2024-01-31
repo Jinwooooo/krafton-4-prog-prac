@@ -1,47 +1,37 @@
 #include <stdio.h>
 
-void foo(int **p) {
-   int q = 10;
-   printf("%p\n", &q);
-   printf("%s\n", "---------------------");
-   printf("%p\n", p);
-   printf("%p\n", *p);
-   printf("%s\n", "---------------------");
+int main () {
+   // int week = 3;
+   // int *ptr = &week;
+
+   // printf("%d\n", week);
+   // printf("%p\n", &week);
+   // printf("%p\n", ptr);
+   // printf("%d\n", *ptr);
+   // printf("%p\n", &ptr);
+
+   // printf("%s\n", "---------------------");
+
+   char alphabet[3] = {'a', 'b', 'c'};
+
+   printf("%s\n", "alphabet char array");
+   printf("%p\n", alphabet);
+   for (int i = 0; i < 3; i++) {
+      printf("%p\n", &alphabet[i]);
+   }
 
    printf("%s\n", "---------------------");
-   *p = &q;
-   printf("%p\n", *p);
-}
 
-int main() {
-   int ko = 4;
-   int *p = &ko; // 포인터 p는 ko의 주소를 가르키고 있다
-   foo(&p);
-   // printf("%p\n", &p);
-   // printf("%d\n", *p);
+   int number[3] = {15, 22, 3};
+
+   printf("%s\n", "number int array");
+   printf("%p\n", number);
+   for (int i = 0; i < 3; i++) {
+      printf("%p\n", &number[i]);
+   }
 
    return 0;
 }
-
-// int main () {
-//    int week = 3;
-//    int *ptr = &week;
-
-//    printf("%d\n", week);
-//    printf("%p\n", &week);
-//    printf("%p\n", ptr);
-//    printf("%d\n", *ptr);
-//    printf("%p\n", &ptr);
-
-//    printf("%s\n", "---------------------");
-
-//    char alphabet[3] = {'a', 'b', 'c'};
-
-//    for (int i = 0; i < 4; i++) {
-//       printf("%p\n", &alphabet[i]);
-//    }
-
-//    printf("%p\n", alphabet);
 
 
 //    printf("%d\n", *alphabet); // output = a

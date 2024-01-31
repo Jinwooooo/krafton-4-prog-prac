@@ -16,7 +16,7 @@ seq = list(map(int, input().strip().split(' ')))
 
 # print(max(dp))
 
-# O(nlogn) by using binary search to reduce time
+# O(nlogn) by using binary search insertion to reduce time
 dp = [float('inf') for _ in range(n + 1)]
 dp[0] = float('-inf')
 result = 0
@@ -25,7 +25,6 @@ for num in seq:
 	idx = bisect_left(dp, num)
 	dp[idx] = num
 	result = max(result, idx)
-	print(dp)
 
 
 if float('inf') in dp:
