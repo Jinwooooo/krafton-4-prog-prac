@@ -47,7 +47,7 @@ def union_find(node, union_arr):
 def dijkstra(graph, start, target, n):
 	visited = [False for _ in range(n + 1)]
 	visited[start] = True
-	min_d = [1e9 for _ in range(n + 1)]
+	min_d = [inf for _ in range(n + 1)]
 	min_d[start] = 0
 	heap = [(0, start)]
 

@@ -1,38 +1,39 @@
-def subset_sum_recursive(nums, target_sum):
 
-    def backtrack(start, current_subset, current_sum):
-        nonlocal val
-        if current_sum == target_sum:
-            if len(current_subset) != 1:
-                val += 1
-                result.append(current_subset[:])  # Add a copy of the subset to the result
+# def subset_sum_recursive(nums, target_sum):
 
-        for i in range(start, len(nums)):
-            current_sum += nums[i]
-            current_subset.append(nums[i])
+#     def backtrack(start, current_subset, current_sum):
+#         nonlocal val
+#         if current_sum == target_sum:
+#             if len(current_subset) != 1:
+#                 val += 1
+#                 result.append(current_subset[:])  # Add a copy of the subset to the result
 
-            # Recur with the next element and the updated subset and sum
-            backtrack(i + 1, current_subset, current_sum)
+#         for i in range(start, len(nums)):
+#             current_sum += nums[i]
+#             current_subset.append(nums[i])
 
-            # Backtrack by removing the last element
-            current_subset.pop()
-            current_sum -= nums[i]
+#             # Recur with the next element and the updated subset and sum
+#             backtrack(i + 1, current_subset, current_sum)
 
-    result = []
-    val = 0
-    nums.sort()  # Sorting the array can help with pruning and duplicate avoidance
-    backtrack(0, [], 0)
+#             # Backtrack by removing the last element
+#             current_subset.pop()
+#             current_sum -= nums[i]
 
-    return result, val
+#     result = []
+#     val = 0
+#     nums.sort()  # Sorting the array can help with pruning and duplicate avoidance
+#     backtrack(0, [], 0)
 
-# Example usage:
-numbers = [-7, -3, -2, 5, 8]
-target = 0
-result, val = subset_sum_recursive(numbers, target)
+#     return result, val
 
-print(val)
-for subset in result:
-    print(f"Subset: {subset}, Sum: {sum(subset)}")
+# # Example usage:
+# numbers = [-7, -3, -2, 5, 8]
+# target = 0
+# result, val = subset_sum_recursive(numbers, target)
+
+# print(val)
+# for subset in result:
+#     print(f"Subset: {subset}, Sum: {sum(subset)}")
 
 
 # bracket = input()

@@ -1,24 +1,25 @@
 import sys
+input = sys.stdin.readline
+N = int(input())
 
-inp = sys.stdin.readline
-x = int(inp())
-output = {0:0, 1:0, 2:1, 3:1}
+t = []
+p = []
+dp = [0 for _ in range(N+1)]
 
-def fnc(x):
-    print(x)
-    if x in output.keys():
-        return output[x]
-    if x % 6 == 0:
-        output[x] = min(fnc(x // 3), fnc(x // 2)) + 1
-    elif x % 3 == 0:
-        output[x] = min(fnc(x // 3), fnc(x-1)) + 1
-    elif x % 2 == 0:
-        output[x] = min(fnc(x // 2), fnc(x-1)) + 1
+for _ in range(N):
+    T, P = map(int, input().split())
+    t.append(T)
+    p.append(P)
+
+
+for i in range(N-1, -1, -1): # 뒤에서부터 거꾸로
+    if t[i] + i > N: # 상담에 필요한 일수가 퇴사일을 넘어가면
+        dp[i] = dp[i+1] # 다음날 값 그대로 가져옴
+    
     else:
-        output[x] = fnc(x - 1) + 1
-    return output[x]
-test = fnc(x)
-print(test)
+        dp[i] = max(dp[i+1], dp[t[i] + i] + p[i]) # 오늘 상담을 안 할 경우와 상담을 할 경우 중 max 값
+
+print(dp[0])
                     
 # N까지 갈 수 없다면 -1, 가능하다면 최솟값 출력
 # if len(dp[N]) == 0:

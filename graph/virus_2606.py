@@ -18,4 +18,4 @@ for _ in range(no_edges):
 	graph[edge].append(node)
 
 visited = []
-print(len(dfs_recur(graph, 1, visited)[1:]))
+print(len(dfs_recur(graph, 1, visited)[]) - 1)

@@ -18,18 +18,17 @@ def dijkstra_maze(graph, visited, n):
 		if x == (n - 1) and y == (n - 1):
 			return count
 
-		# traverse up down right left
 		for i in range(4):
-			xx = x + dx[i]
-			yy = y + dy[i]
+			nx = x + dx[i]
+			ny = y + dy[i]
 
-			if (0 <= xx < n) and (0 <= yy < n) and not visited[xx][yy]:
-				visited[xx][yy] = True
+			if (0 <= nx < n) and (0 <= ny < n) and not visited[nx][ny]:
+				visited[nx][ny] = True
 
-				if graph[xx][yy] == 1:
-					heappush(heap, (count, xx, yy))
+				if graph[nx][ny] == 1:
+					heappush(heap, (count, nx, ny))
 				else:
-					heappush(heap, (count + 1, xx, yy))
+					heappush(heap, (count + 1, nx, ny))
 
 n = int(input())
 maze = []
